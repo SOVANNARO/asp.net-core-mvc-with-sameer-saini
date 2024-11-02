@@ -42,6 +42,10 @@ process the request and return the appropriate view as a response.
 
 DbContext Class -> Entity Framwork Core -> Database
 
+### Repository Pattern
+
+Web Pages -> Repositories -> Database
+
 #### Corrent to do
 https://drive.google.com/drive/folders/1yO8IyqOXC1j757cMr3dk6zuy-ZbHa9vw
 https://www.udemy.com/course/aspnet-mvc-course-aspnet-core/?couponCode=KEEPLEARNING

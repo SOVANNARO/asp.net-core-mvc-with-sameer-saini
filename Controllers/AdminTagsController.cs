@@ -1,17 +1,17 @@
-﻿using asp_net_core_mvc.Data;
-using asp_net_core_mvc.Models.Domain;
+﻿using asp_net_core_mvc.Models.Domain;
 using asp_net_core_mvc.Models.ViewModels;
+using asp_net_core_mvc.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace asp_net_core_mvc.Controllers
 {
     public class AdminTagsController : Controller
     {
-        private readonly BloggieDbContext bloggieDbContext;
+        private readonly ITagRepository tagRepository;
 
-        public AdminTagsController(BloggieDbContext bloggieDbContext)
+        public AdminTagsController(ITagRepository tagRepository)
         {
-            this.bloggieDbContext = bloggieDbContext;
+            this.tagRepository = tagRepository;
         }
 
         [HttpGet]
@@ -22,30 +22,33 @@ namespace asp_net_core_mvc.Controllers
 
         [HttpPost]
         [ActionName("Add")]
-        public IActionResult Add(AddTagRequest addTagRequest)
+        public async Task<IActionResult> Add(AddTagRequest addTagRequest)
         {
-            var tag = new Tag
+            if (ModelState.IsValid)
             {
-                Name = addTagRequest.Name,
-                DisplayName = addTagRequest.DisplayName,
-            };
-            bloggieDbContext.Tags.Add(tag);
-            bloggieDbContext.SaveChanges();
-            return RedirectToAction("List");
+                var tag = new Tag
+                {
+                    Name = addTagRequest.Name,
+                    DisplayName = addTagRequest.DisplayName,
+                };
+                await tagRepository.AddAsync(tag);
+                return RedirectToAction("List");
+            }
+            return View(addTagRequest);
         }
 
         [HttpGet]
         [ActionName("List")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            var tags = bloggieDbContext.Tags.ToList();
+            var tags = await tagRepository.GetAllAsync();
             return View(tags);
         }
 
         [HttpGet]
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            var tag = bloggieDbContext.Tags.FirstOrDefault(t => t.Id == id);
+            var tag = await tagRepository.GetAsync(id);
             if (tag != null)
             {
                 var editTagRequest = new EditTagRequest
@@ -60,27 +63,31 @@ namespace asp_net_core_mvc.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(EditTagRequest editTagRequest)
+        public async Task<IActionResult> Edit(EditTagRequest editTagRequest)
         {
-            var tag = bloggieDbContext.Tags.FirstOrDefault(t => t.Id == editTagRequest.Id);
-            if (tag != null)
+            if (ModelState.IsValid)
             {
-                tag.Name = editTagRequest.Name;
-                tag.DisplayName = editTagRequest.DisplayName;
-                bloggieDbContext.SaveChanges();
-                return RedirectToAction("List");
+                var tag = new Tag
+                {
+                    Id = editTagRequest.Id,
+                    Name = editTagRequest.Name,
+                    DisplayName = editTagRequest.DisplayName,
+                };
+                var updateTag = await tagRepository.UpdateAsync(tag);
+                if (updateTag != null)
+                {
+                    return RedirectToAction("List");
+                }
             }
-            return NotFound();
+            return View(editTagRequest);
         }
 
         [HttpPost]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var tag = bloggieDbContext.Tags.FirstOrDefault(t => t.Id == id);
-            if (tag != null)
+            var deletedTag = await tagRepository.DeleteAsync(id);
+            if (deletedTag != null)
             {
-                bloggieDbContext.Tags.Remove(tag);
-                bloggieDbContext.SaveChanges();
                 return RedirectToAction("List");
             }
             return NotFound();
