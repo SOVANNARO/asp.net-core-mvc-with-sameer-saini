@@ -1,0 +1,60 @@
+﻿@model asp_net_core_mvc.Models.ViewModels.AdminBlogPostRequest
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div>
+        <h1>Add New BlogPost - Admin Functionality</h1>
+    </div>
+</div>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label asp-for="Heading"></label>
+        <input asp-for="Heading" class="form-control" />
+        <span asp-validation-for="Heading" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PageTitle"></label>
+        <input asp-for="PageTitle" class="form-control" />
+        <span asp-validation-for="PageTitle" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Content"></label>
+        <textarea asp-for="Content" class="form-control"></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ShortDescription"></label>
+        <input asp-for="ShortDescription" class="form-control" />
+        <span asp-validation-for="ShortDescription" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FeaturedImageUrl"></label>
+        <input asp-for="FeaturedImageUrl" class="form-control" />
+        <span asp-validation-for="FeaturedImageUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UrlHandle"></label>
+        <input asp-for="UrlHandle" class="form-control" />
+        <span asp-validation-for="UrlHandle" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PublishedDate" class="form-label">Published Date</label>
+        <input asp-for="PublishedDate" type="date" class="form-control" placeholder="Select a date" value="@Model.PublishedDate.ToString("MM/dd/yyyy")" />
+        <span asp-validation-for="PublishedDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Author"></label>
+        <input asp-for="Author" class="form-control" />
+        <span asp-validation-for="Author" class="text-danger"></span>
+    </div>
+    <div class="form-group form-check">
+        <input asp-for="Visiable" class="form-check-input" />
+        <label asp-for="Visiable" class="form-check-label"></label>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Tags</label>
+        <select asp-for="SelectedTags" class="form-control" asp-items="@Model.Tags"></select>
+        <span asp-validation-for="SelectedTags" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

@@ -47,5 +47,5 @@ DbContext Class -> Entity Framwork Core -> Database
 Web Pages -> Repositories -> Database
 
 #### Corrent to do
-https://drive.google.com/drive/folders/1yO8IyqOXC1j757cMr3dk6zuy-ZbHa9vw
+https://drive.google.com/drive/folders/1dRUT7j2a2nSffpDyBbZasULImURoc6l3
 https://www.udemy.com/course/aspnet-mvc-course-aspnet-core/?couponCode=KEEPLEARNING

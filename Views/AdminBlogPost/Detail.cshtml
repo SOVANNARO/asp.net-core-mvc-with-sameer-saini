@@ -1,0 +1,47 @@
+﻿@model asp_net_core_mvc.Models.Domain.BlogPost
+
+@{
+    ViewData["Title"] = "Blog Post Details";
+}
+
+@if (Model != null)
+{
+    <h1>@Model.Heading</h1>
+
+    <div>
+        <strong>Author:</strong> @Model.Author
+    </div>
+    <div>
+        <strong>Published Date:</strong> @Model.PublishedDate.ToString("yyyy-MM-dd")
+    </div>
+    <div>
+        <strong>Content:</strong>
+        <p>@Model.Content</p>
+    </div>
+    <div>
+        <strong>Short Description:</strong>
+        <p>@Model.ShortDescription</p>
+    </div>
+    <div>
+        <strong>Featured Image:</strong>
+        <img src="@Model.FeaturedImageUrl" alt="Featured Image" />
+    </div>
+    <div>
+        <strong>Tags:</strong>
+        <ul>
+            @if (Model.Tags != null)
+            {
+                foreach (var tag in Model.Tags)
+                {
+                    <li>@tag.DisplayName</li>
+                }
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <p>Blog post details are not available.</p>
+}
+
+<a href="@Url.Action("List")" class="btn btn-secondary">Back to List</a>

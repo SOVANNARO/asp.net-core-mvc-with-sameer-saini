@@ -1,0 +1,68 @@
+﻿@model IEnumerable<asp_net_core_mvc.Models.Domain.BlogPost>
+
+@{
+    ViewData["Title"] = "Blog Posts List";
+}
+
+<h1>Blog Posts</h1>
+
+<a href="@Url.Action("Add", "AdminBlogPost")" class="btn btn-success mb-3">Create New Blog Post</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Heading</th>
+            <th>Author</th>
+            <th>Published Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var post in Model)
+        {
+            <tr>
+                <td>@post.Heading</td>
+                <td>@post.Author</td>
+                <td>@post.PublishedDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <a href="@Url.Action("Detail", new { id = post.Id })" class="btn btn-info">View Details</a>
+                    <a href="@Url.Action("Edit", new { id = post.Id })" class="btn btn-primary">Edit</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-post-id="@post.Id">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this blog post?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var confirmDeleteModal = document.getElementById('confirmDeleteModal');
+        confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var postId = button.getAttribute('data-post-id');
+            var form = document.getElementById('deleteForm');
+            form.action = '/AdminBlogPost/Delete/' + postId;
+        });
+    </script>
+}
