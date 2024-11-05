@@ -8,27 +8,34 @@
 
 <form asp-action="Edit" method="post">
     <div class="form-group">
-        <label asp-for="Heading"></label>
+        <label asp-for="Heading">Heading</label>
         <input asp-for="Heading" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="PageTitle"></label>
+        <label asp-for="PageTitle">Page Title</label>
         <input asp-for="PageTitle" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Content"></label>
-        <textarea asp-for="Content" class="form-control"></textarea>
+        <textarea id="content" asp-for="Content" class="form-control"></textarea>
     </div>
     <div class="form-group">
-        <label asp-for="ShortDescription"></label>
+        <label asp-for="ShortDescription">Short Description</label>
         <textarea asp-for="ShortDescription" class="form-control"></textarea>
     </div>
     <div class="form-group">
-        <label asp-for="FeaturedImageUrl"></label>
+        <label asp-for="FeaturedImageUrl">Featured ImageUrl</label>
         <input asp-for="FeaturedImageUrl" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="UrlHandle"></label>
+        <img id="imagePreview" src="@Model.FeaturedImageUrl" alt="Image Preview" style="max-width: 100%; height: auto;" />
+    </div>
+    <div class="form-group">
+        <label class="form-label">Upload New Featured Image</label>
+        <input type="file" id="featuredImageUpload" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="UrlHandle">Url Handle</label>
         <input asp-for="UrlHandle" class="form-control" />
     </div>
     <div class="form-group">
@@ -36,7 +43,7 @@
         <input asp-for="PublishedDate" class="form-control" type="date" />
     </div>
     <div class="form-group">
-        <label asp-for="Author"></label>
+        <label asp-for="Author">Author</label>
         <input asp-for="Author" class="form-control" />
     </div>
     <div class="form-group form-check">
@@ -50,3 +57,33 @@
     <button type="submit" class="btn btn-primary">Save Changes</button>
     <a asp-action="List" class="btn btn-secondary">Cancel</a>
 </form>
+
+@section Scripts {
+    <script>
+        var editor = new FroalaEditor('#content');
+
+        const featuredUploadElement = document.getElementById('featuredImageUpload');
+        const featuredImageUrlElement = document.querySelector('input[name="FeaturedImageUrl"]');
+        const imagePreviewElement = document.getElementById('imagePreview');
+
+        featuredUploadElement.addEventListener('change', uploadFeaturedImage);
+
+        async function uploadFeaturedImage(e) {
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*'
+                },
+                body: data
+            }).then(response => response.json().then(result => {
+                featuredImageUrlElement.value = result.link;
+                imagePreviewElement.src = result.link;
+            }));
+        }
+
+        featuredImageUrlElement.addEventListener('change', uploadFeaturedImage);
+    </script>
+}

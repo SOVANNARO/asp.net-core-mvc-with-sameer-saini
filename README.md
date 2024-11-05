@@ -46,6 +46,12 @@ DbContext Class -> Entity Framwork Core -> Database
 
 Web Pages -> Repositories -> Database
 
+### The Next Generation WYSIWYG HTML Editor
+- https://froala.com/
+
+### Upload Image with cloudinary
+- https://cloudinary.com/
+
 #### Corrent to do
-https://drive.google.com/drive/folders/1dRUT7j2a2nSffpDyBbZasULImURoc6l3
+https://drive.google.com/drive/folders/1-PzAafgbxYokmRyaGSdUgOsldokZsz0a
 https://www.udemy.com/course/aspnet-mvc-course-aspnet-core/?couponCode=KEEPLEARNING

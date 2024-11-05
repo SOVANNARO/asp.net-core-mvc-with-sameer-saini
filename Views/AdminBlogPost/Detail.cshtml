@@ -16,15 +16,16 @@
     </div>
     <div>
         <strong>Content:</strong>
-        <p>@Model.Content</p>
+        <p>@Html.Raw(Model.Content)</p>
     </div>
+
     <div>
         <strong>Short Description:</strong>
         <p>@Model.ShortDescription</p>
     </div>
     <div>
         <strong>Featured Image:</strong>
-        <img src="@Model.FeaturedImageUrl" alt="Featured Image" />
+        <img src="@Model.FeaturedImageUrl" alt="Featured Image" class="img-fluid" />
     </div>
     <div>
         <strong>Tags:</strong>
