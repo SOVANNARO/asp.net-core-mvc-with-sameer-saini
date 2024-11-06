@@ -41,6 +41,16 @@ namespace asp_net_core_mvc.Repositories
             return await bloggieDbContext.BlogPosts.FindAsync(id);
         }
 
+        public async Task<BlogPost?> GetByIdAsync(Guid id)
+        {
+            return await bloggieDbContext.BlogPosts.FindAsync(id);
+        }
+
+        public async Task<BlogPost?> GetByUrlHandleAsync(string urlHandle)
+        {
+            return await bloggieDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+        }
+
         public async Task<BlogPost> UpdateAsync(BlogPost post)
         {
             var existingPost = await bloggieDbContext.BlogPosts.FindAsync(post.Id);

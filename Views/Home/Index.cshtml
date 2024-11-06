@@ -1,8 +1,52 @@
-﻿@{
+﻿@model IEnumerable<asp_net_core_mvc.Models.Domain.BlogPost>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var blogPost in Model)
+                {
+                    <div class="mb-5 bg-light box-shadow">
+                        <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" class="mb-2 d-block img-fluid" />
+                        <h2 class="mb-2">@blogPost.Heading</h2>
+                        <p class="mb-4">
+                            Author: @(blogPost.Author ?? "Unknown")
+                            <br />
+                            Published Date: @(blogPost.PublishedDate.ToShortDateString() ?? "N/A")
+                        </p>
+                        <p class="mb-4">
+                            @if (blogPost.Tags != null && blogPost.Tags.Any())
+                            {
+                                foreach (var tag in blogPost.Tags)
+                                {
+                                    <span class="badge bg-secondary me-1">@tag.Name</span>
+                                }
+                            }
+                            else
+                            {
+                                <span>No tags available</span>
+                            }
+                        </p>
+                        <p class="mb-4">@blogPost.ShortDescription</p>
+                        <a class="btn btn-dark"
+                           asp-area=""
+                           asp-controller="Blogs"
+                           asp-action="Index"
+                           asp-route-id="@blogPost.Id">
+                            Read More
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No blog posts available</p>
+            }
+        </div>
+    </div>
 </div>
